@@ -36,8 +36,8 @@ public class Player extends Entity{
         changeState(new IdleState());
     }
     public void setDefaulValues(){
-        worldX = gp.tileSize*50;
-        worldY = gp.tileSize*78;
+        worldX = gp.tileSize*76;
+        worldY = gp.tileSize*77;
         speed = 5;
         direction = "down";
         health = 20;

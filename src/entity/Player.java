@@ -5,7 +5,7 @@ import main.KeyHandler;
 import entity.CharacterState;
 import entity.IdleState;
 import entity.AttackState;
-
+import main.SoundManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class Player extends Entity{
     KeyHandler keyH;
+    private AttackStrategy attackStrategy = new MeleeAttackStrategy();
 
     public final int screenX;
     public final int screenY;
@@ -34,6 +35,9 @@ public class Player extends Entity{
 
         getPlayerImage();
         changeState(new IdleState());
+    }
+    public void performAttack(Entity target) {
+        attackStrategy.attack(this, target);
     }
     public void setDefaulValues(){
         worldX = gp.tileSize*76;
@@ -101,8 +105,7 @@ public class Player extends Entity{
                 spriteCounter = 0;
             }
             if (moving && !gp.walkSound.isRunning()) {
-                gp.walkSound.setFramePosition(0);
-                gp.walkSound.start();
+                SoundManager.getInstance().play("walk");
             }
         }
     }

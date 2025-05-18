@@ -1,17 +1,14 @@
 package entity;
 
 import main.GameplayScreen;
-
 import java.awt.*;
 
 public abstract class Entity implements Cloneable {
-    public int maxHealth;
     public int health;
     public CharacterState state;
     public long lastAttackTime = 0;
-    public long attackCooldown  = 500;  // мс между ударами
+    public long attackCooldown  = 500;
     public int  attackDamage    = 5;
-
 
     GameplayScreen gp;
     public int worldX,worldY;
@@ -21,6 +18,7 @@ public abstract class Entity implements Cloneable {
     public int spriteNum=4;
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public boolean collisionOn = false;
+
     public Entity(GameplayScreen gp){
         this.gp = gp;
     }
@@ -41,5 +39,4 @@ public abstract class Entity implements Cloneable {
         }
     }
     public abstract void defaultUpdate();
-
 }

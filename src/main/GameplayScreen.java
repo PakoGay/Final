@@ -2,14 +2,12 @@ package main;
 
 import entity.Player;
 import tile.TileManager;
-
 import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import entity.EntityFactory;
 import entity.Enemy;
-//Логика уровня
 
 public class GameplayScreen implements Screen {
     public final int originalTileSize = 16;
@@ -28,10 +26,10 @@ public class GameplayScreen implements Screen {
 
     public final Clip walkSound  = SoundManager.getInstance().getClip("walk");
     public final Clip musicLoop  = SoundManager.getInstance().getClip("music");
-
     public final TileManager tileM;
     public final CollisionChecker cChecker;
     public final Player player;
+    public UI ui;
     public final Enemy enemy;
     public final KeyHandler keyH = new KeyHandler();
     public final List<Enemy> enemies = new ArrayList<>();
@@ -40,6 +38,8 @@ public class GameplayScreen implements Screen {
         tileM    = new TileManager(this);
         cChecker = new CollisionChecker(this);
         player   = new Player(this, keyH);
+        ui = new UI(this);
+        player.addHealthObserver(new entity.UIHealthObserver(this));
         musicLoop.loop(Clip.LOOP_CONTINUOUSLY);
         enemy = EntityFactory.createEnemy(this, tileSize * 44, tileSize * 46);
         enemies.add(enemy);
@@ -57,6 +57,7 @@ public class GameplayScreen implements Screen {
 
     @Override public void update(float dt) {
         player.update();
+        ui.update();
         for (Enemy e : enemies) e.update();
     }
 
@@ -64,9 +65,10 @@ public class GameplayScreen implements Screen {
         tileM.draw(g);
         for (Enemy e : enemies) e.draw(g);
         player.draw(g);
+        ui.draw(g);
         Font font = new Font("Arial", Font.BOLD, 26);  // имя шрифта, стиль, размер
         g.setFont(font);
         g.setColor(Color.RED);
-        g.drawString("Health: " + player.health, screenWidth - 800, 25);
+
     }
 }

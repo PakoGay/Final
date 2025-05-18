@@ -47,7 +47,7 @@ public class Enemy extends Entity {
         this.direction = "down";
         this.health = 15;
         this.attackCooldown = 2000;
-        this.attackDamage   = 5;
+        this.attackDamage   = 1;
 
         solidArea = new Rectangle(8, 16, 32, 32);   // хит-бокс поменьше
         pathFinder = new PathFinder(gp);

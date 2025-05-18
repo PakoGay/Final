@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-
-
 public class Player extends Entity{
     KeyHandler keyH;
     private java.util.List<HealthObserver> healthObservers = new java.util.ArrayList<>();
@@ -25,7 +23,6 @@ public class Player extends Entity{
     public Player(GameplayScreen gp, KeyHandler keyH){
         super(gp);
         this.keyH=keyH;
-        addHealthObserver(new ConsoleHealthObserver());
         moveUpCommand    = new MoveUpCommand(this);
         moveDownCommand  = new MoveDownCommand(this);
         moveLeftCommand  = new MoveLeftCommand(this);
@@ -52,7 +49,7 @@ public class Player extends Entity{
         worldY = gp.tileSize*77;
         speed = 5;
         direction = "down";
-        health = 100;
+        health = 3;
         notifyHealthChanged();
         attackCooldown = 1200;
         attackDamage   = 10;
@@ -106,7 +103,6 @@ public class Player extends Entity{
     public void removeHealthObserver(HealthObserver observer) {
         healthObservers.remove(observer);
     }
-
     public void notifyHealthChanged() {
         for (HealthObserver observer : healthObservers) {
             observer.onHealthChanged(this.health);

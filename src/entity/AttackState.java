@@ -81,6 +81,7 @@ public class AttackState implements CharacterState {
             Rectangle pr = new Rectangle(pl.worldX, pl.worldY, en.gp.tileSize, en.gp.tileSize);
             if (hitBox.intersects(pr)) {
                 pl.health -= en.attackDamage;
+                if (pl.health < 0) pl.health = 0;
                 pl.notifyHealthChanged();
                 if (pl.health <= 0) pl.setDefaulValues();
             }

@@ -56,7 +56,6 @@ public class MainMenuScreen implements Screen, MouseListener, MouseMotionListene
     @Override
     public void render(Graphics2D g) {
         g.drawImage(bg, 0, 0, gameplay.screenWidth, gameplay.screenHeight, null);
-        // Используем изображения для hover в зависимости от состояния
         g.drawImage(isStartHovered ? startImgHover : startImg, startBtn.x, startBtn.y, startBtn.width, startBtn.height, null);
         g.drawImage(isExitHovered ? exitImgHover : exitImg, exitBtn.x, exitBtn.y, exitBtn.width, exitBtn.height, null);
         g.drawImage(isAboutHovered ? aboutImgHover : aboutImg, aboutBtn.x, aboutBtn.y, aboutBtn.width, aboutBtn.height, null);
@@ -72,7 +71,7 @@ public class MainMenuScreen implements Screen, MouseListener, MouseMotionListene
         } else if (exitBtn.contains(p)) {
             System.exit(0);
         } else if (aboutBtn.contains(p)) {
-            JOptionPane.showMessageDialog(canvas, "About this game");
+            showInfoDialog();
         }
     }
 
@@ -99,9 +98,24 @@ public class MainMenuScreen implements Screen, MouseListener, MouseMotionListene
         isExitHovered = exitBtn.contains(p);
         isAboutHovered = aboutBtn.contains(p);
     }
-
     @Override
     public void mouseDragged(MouseEvent e) {
+    }
+    private void showInfoDialog() {
+        try {
+            BufferedImage infoImage = ImageIO.read(getClass().getResource("/menu/info.png"));
+            int originalWidth = infoImage.getWidth();
+            int originalHeight = infoImage.getHeight();
+            int scaledWidth = originalWidth / 2;
+            int scaledHeight = originalHeight / 2;
+            Image scaledImage = infoImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon(scaledImage);
+            JLabel label = new JLabel(icon);
+            JOptionPane.showMessageDialog(canvas, label, "About", JOptionPane.PLAIN_MESSAGE);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(canvas, "Could not load info image.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
 

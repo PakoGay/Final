@@ -3,13 +3,13 @@ package main;
 import entity.*;
 import tile.Assets;
 import tile.TileManager;
-
 import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-//Логика уровня
+import entity.EntityFactory;
+import entity.Enemy;
 
 public class GameplayScreen implements Screen {
     public final int originalTileSize = 16;
@@ -32,6 +32,7 @@ public class GameplayScreen implements Screen {
     public final TileManager tileM;
     public final CollisionChecker cChecker;
     public final Player player;
+    public UI ui;
     public final Enemy enemy;
     public final KeyHandler keyH = new KeyHandler();
     public final List<Enemy> enemies = new ArrayList<>();
@@ -47,6 +48,8 @@ public class GameplayScreen implements Screen {
         tileM    = new TileManager(this);
         cChecker = new CollisionChecker(this);
         player   = new Player(this, keyH);
+        ui = new UI(this);
+        player.addHealthObserver(new entity.UIHealthObserver(this));
         musicLoop.loop(Clip.LOOP_CONTINUOUSLY);
         enemy = EntityFactory.createEnemy(this, tileSize * 44, tileSize * 46);
         enemies.add(enemy);
@@ -171,9 +174,7 @@ public class GameplayScreen implements Screen {
     }
 
     @Override public void update(float dt) {
-        // 2) Обновляем игрока
         player.update();
-
         if (keyH.iPressed) {
             if (!iConsumed) {
                 iConsumed = true; // блокируем до отпускания
@@ -204,8 +205,7 @@ public class GameplayScreen implements Screen {
 
         // 3) если открыт диалог — мир заморожен
         if (dialogueActive) return;
-
-        // 4) иначе — обычный апдейт врагов и NPC
+        ui.update();
         for (Enemy e : enemies) e.update();
         for (NPC   n : npcs)    n.update();
         for (WheatNPC wf : walkers) wf.update();
@@ -217,6 +217,7 @@ public class GameplayScreen implements Screen {
         for (NPC npc : npcs) npc.draw(g);
         for (WheatNPC wf : walkers) wf.draw(g);
         player.draw(g);
+        ui.draw(g);
         Font font = new Font("Arial", Font.BOLD, 26);  // имя шрифта, стиль, размер
         g.setFont(font);
         g.setColor(Color.RED);

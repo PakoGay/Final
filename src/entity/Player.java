@@ -8,10 +8,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-
-
 public class Player extends Entity{
     KeyHandler keyH;
+    private java.util.List<HealthObserver> healthObservers = new java.util.ArrayList<>();
     private Command moveUpCommand;
     private Command moveDownCommand;
     private Command moveLeftCommand;
@@ -50,7 +49,8 @@ public class Player extends Entity{
         worldY = gp.tileSize*77;
         speed = 5;
         direction = "down";
-        health = 20;
+        health = 3;
+        notifyHealthChanged();
         attackCooldown = 1200;
         attackDamage   = 10;
     }
@@ -94,6 +94,18 @@ public class Player extends Entity{
         }
         if (!gp.walkSound.isRunning()) {
             SoundManager.getInstance().play("walk");
+        }
+    }
+    public void addHealthObserver(HealthObserver observer) {
+        healthObservers.add(observer);
+    }
+
+    public void removeHealthObserver(HealthObserver observer) {
+        healthObservers.remove(observer);
+    }
+    public void notifyHealthChanged() {
+        for (HealthObserver observer : healthObservers) {
+            observer.onHealthChanged(this.health);
         }
     }
     BufferedImage[][] frames = new BufferedImage[4][8]; // 0-UP,1-DOWN,2-LEFT,3-RIGHT

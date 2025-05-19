@@ -2,11 +2,7 @@ package entity;
 
 import main.GameplayScreen;
 import main.KeyHandler;
-import entity.CharacterState;
-import entity.IdleState;
-import entity.AttackState;
-
-
+import main.SoundManager;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,6 +10,12 @@ import java.io.IOException;
 
 public class Player extends Entity{
     KeyHandler keyH;
+    private java.util.List<HealthObserver> healthObservers = new java.util.ArrayList<>();
+    private Command moveUpCommand;
+    private Command moveDownCommand;
+    private Command moveLeftCommand;
+    private Command moveRightCommand;
+    private AttackStrategy attackStrategy = new MeleeAttackStrategy();
 
     public final int screenX;
     public final int screenY;
@@ -21,6 +23,10 @@ public class Player extends Entity{
     public Player(GameplayScreen gp, KeyHandler keyH){
         super(gp);
         this.keyH=keyH;
+        moveUpCommand    = new MoveUpCommand(this);
+        moveDownCommand  = new MoveDownCommand(this);
+        moveLeftCommand  = new MoveLeftCommand(this);
+        moveRightCommand = new MoveRightCommand(this);
 
         screenX = gp.screenWidth / 2-(gp.tileSize/2);
         screenY = gp.screenHeight / 2-(gp.tileSize/2);
@@ -35,14 +41,72 @@ public class Player extends Entity{
         getPlayerImage();
         changeState(new IdleState());
     }
+    public void performAttack(Entity target) {
+        attackStrategy.attack(this, target);
+    }
     public void setDefaulValues(){
-        worldX = gp.tileSize*50;
-        worldY = gp.tileSize*78;
+        worldX = gp.tileSize*76;
+        worldY = gp.tileSize*77;
         speed = 5;
         direction = "down";
-        health = 20;
+        health = 3;
+        notifyHealthChanged();
         attackCooldown = 1200;
         attackDamage   = 10;
+    }
+    public void moveUp() {
+        direction = "up";
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+        if (!collisionOn) worldY -= speed;
+        animateWalk();
+    }
+
+    public void moveDown() {
+        direction = "down";
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+        if (!collisionOn) worldY += speed;
+        animateWalk();
+    }
+
+    public void moveLeft() {
+        direction = "left";
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+        if (!collisionOn) worldX -= speed;
+        animateWalk();
+    }
+
+    public void moveRight() {
+        direction = "right";
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+        if (!collisionOn) worldX += speed;
+        animateWalk();
+    }
+
+    private void animateWalk() {
+        spriteCounter++;
+        if (spriteCounter > 10) {
+            spriteNum = spriteNum % 8 + 1;
+            spriteCounter = 0;
+        }
+        if (!gp.walkSound.isRunning()) {
+            SoundManager.getInstance().play("walk");
+        }
+    }
+    public void addHealthObserver(HealthObserver observer) {
+        healthObservers.add(observer);
+    }
+
+    public void removeHealthObserver(HealthObserver observer) {
+        healthObservers.remove(observer);
+    }
+    public void notifyHealthChanged() {
+        for (HealthObserver observer : healthObservers) {
+            observer.onHealthChanged(this.health);
+        }
     }
     BufferedImage[][] frames = new BufferedImage[4][8]; // 0-UP,1-DOWN,2-LEFT,3-RIGHT
 
@@ -74,37 +138,10 @@ public class Player extends Entity{
     public void update() {
         state.update(this);
 
-        boolean moving = keyH.upPressed || keyH.downPressed ||
-                keyH.leftPressed || keyH.rightPressed;
-
-        if (moving) {
-            if (keyH.upPressed)    direction = "up";
-            if (keyH.downPressed)  direction = "down";
-            if (keyH.leftPressed)  direction = "left";
-            if (keyH.rightPressed) direction = "right";
-
-            collisionOn = false;
-            gp.cChecker.checkTile(this);
-
-            if (!collisionOn) {
-                switch (direction) {
-                    case "up"    -> worldY -= speed;
-                    case "down"  -> worldY += speed;
-                    case "left"  -> worldX -= speed;
-                    case "right" -> worldX += speed;
-                }
-            }
-
-            spriteCounter++;
-            if (spriteCounter > 10) {
-                spriteNum = spriteNum % 8 + 1;  // 1-8 по кругу
-                spriteCounter = 0;
-            }
-            if (moving && !gp.walkSound.isRunning()) {
-                gp.walkSound.setFramePosition(0);
-                gp.walkSound.start();
-            }
-        }
+        if (keyH.upPressed)    moveUpCommand.execute();
+        if (keyH.downPressed)  moveDownCommand.execute();
+        if (keyH.leftPressed)  moveLeftCommand.execute();
+        if (keyH.rightPressed) moveRightCommand.execute();
     }
     public void draw(Graphics2D g2){
         int dir = switch (direction) {      // перевод строки→индекс

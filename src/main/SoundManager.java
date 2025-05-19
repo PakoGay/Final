@@ -6,22 +6,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SoundManager {
-
-    private static final Map<String, Clip> CACHE = new HashMap<>();
-
-    private SoundManager() {}
-
-    public static Clip get(String path) {
-        return CACHE.computeIfAbsent(path, p -> {
+    public Clip getClip(String name) {
+        return cache.computeIfAbsent(name, n -> {
             try {
-                URL url  = SoundManager.class.getResource(p);
+                URL url = SoundManager.class.getResource("/sound/" + n + ".wav");
                 AudioInputStream ais = AudioSystem.getAudioInputStream(url);
                 Clip c = AudioSystem.getClip();
                 c.open(ais);
                 return c;
             } catch (Exception e) {
-                throw new RuntimeException("Не удалось загрузить звук: " + p, e);
+                throw new RuntimeException("Не удалось загрузить звук: " + n, e);
             }
         });
+    }
+
+    private static SoundManager instance;
+    private final Map<String, Clip> cache = new HashMap<>();
+
+    private SoundManager() {}
+
+    public static SoundManager getInstance() {
+        if (instance == null) {
+            instance = new SoundManager();
+        }
+        return instance;
+    }
+
+    public void play(String name) {
+        Clip clip = cache.computeIfAbsent(name, n -> {
+            try {
+                URL url = SoundManager.class.getResource("/sound/" + n + ".wav");
+                AudioInputStream ais = AudioSystem.getAudioInputStream(url);
+                Clip c = AudioSystem.getClip();
+                c.open(ais);
+                return c;
+            } catch (Exception e) {
+                throw new RuntimeException("Не удалось загрузить звук: " + n, e);
+            }
+        });
+        if (clip.isRunning()) clip.stop();
+        clip.setFramePosition(0);
+        clip.start();
     }
 }

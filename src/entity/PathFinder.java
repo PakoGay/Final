@@ -1,4 +1,3 @@
-// src/main/PathFinder.java
 package entity;
 
 import main.GameplayScreen;

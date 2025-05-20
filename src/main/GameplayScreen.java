@@ -75,99 +75,48 @@ public class GameplayScreen implements Screen {
                         "Ступай и одолей их прежде чем они что-то предпримут."
                 }
         ));
-        // поле №1
         Rectangle field0 = new Rectangle(tileSize*57,  tileSize*78,  tileSize*2, tileSize*1);
         walkers.add(EntityFactory.createWheatWalker(
                 this, tileSize*57,  tileSize*78, "/npc/farmer", field0));
-
-        // поле №1
-        Rectangle field1 = new Rectangle(tileSize * 82, tileSize * 52, tileSize * 1, tileSize * 1);
+        Rectangle field1 = new Rectangle(tileSize * 82, tileSize * 51, tileSize * 1, tileSize * 1);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 82, tileSize * 52,
-                "/npc/farmer",
-                field1
+                this, tileSize * 82, tileSize * 51, "/npc/farmer", field1
         ));
-
-// поле №2
         Rectangle field2 = new Rectangle(tileSize * 84, tileSize * 53, tileSize * 1, tileSize * 1);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 84, tileSize * 53,
-                "/npc/farmer",
-                field2
+                this, tileSize * 84, tileSize * 53, "/npc/farmer", field2
         ));
-
-// поле №3
-        Rectangle field3 = new Rectangle(tileSize * 58, tileSize * 60, tileSize * 2, tileSize * 2);
+        Rectangle field3 = new Rectangle(tileSize * 57, tileSize * 60, tileSize * 1, tileSize * 2);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 59, tileSize * 61,  // центр 2×2 зоны
-                "/npc/farmer",
-                field3
+                this, tileSize * 57, tileSize * 60, "/npc/farmer",field3
         ));
-
-// поле №4
-        Rectangle field4 = new Rectangle(tileSize * 42, tileSize * 65, tileSize * 2, tileSize * 2);
+        Rectangle field4 = new Rectangle(tileSize * 42, tileSize * 65, tileSize * 2, tileSize * 1);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 43, tileSize * 66,
-                "/npc/farmer",
-                field4
+                this, tileSize * 43, tileSize * 66, "/npc/farmer", field4
         ));
-
-// поле №5
-        Rectangle field5 = new Rectangle(tileSize * 57, tileSize * 67, tileSize * 4, tileSize * 8);
+        Rectangle field5 = new Rectangle(tileSize * 58, tileSize * 65, tileSize * 3, tileSize * 7);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 59, tileSize * 71,  // центр 4×8 зоны
-                "/npc/farmer",
-                field5
+                this, tileSize * 58, tileSize * 65, "/npc/farmer", field5
         ));
-
-// поле №6
-        Rectangle field6 = new Rectangle(tileSize * 50, tileSize * 69, tileSize * 3, tileSize * 2);
+        Rectangle field6 = new Rectangle(tileSize * 49, tileSize * 68, tileSize * 3, tileSize * 2);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 51, tileSize * 70,
-                "/npc/farmer",
-                field6
+                this, tileSize * 49, tileSize * 68, "/npc/farmer", field6
         ));
-
-// поле №7
-        Rectangle field7 = new Rectangle(tileSize * 42, tileSize * 72, tileSize * 1, tileSize * 2);
+        Rectangle field7 = new Rectangle(tileSize * 41, tileSize * 71, tileSize * 1, tileSize * 2);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 42, tileSize * 73,
-                "/npc/farmer",
-                field7
+                this, tileSize * 41, tileSize * 71, "/npc/farmer", field7
         ));
-
-// поле №8
         Rectangle field8 = new Rectangle(tileSize * 53, tileSize * 73, tileSize * 1, tileSize * 2);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 53, tileSize * 74,
-                "/npc/farmer",
-                field8
+                this, tileSize * 53, tileSize * 74, "/npc/farmer", field8
         ));
-
-// поле №9
-        Rectangle field9 = new Rectangle(tileSize * 93, tileSize * 73, tileSize * 1, tileSize * 1);
+        Rectangle field9 = new Rectangle(tileSize * 92, tileSize * 72, tileSize * 2, tileSize * 2);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 93, tileSize * 73,
-                "/npc/farmer",
-                field9
+                this, tileSize * 92, tileSize * 72, "/npc/farmer", field9
         ));
-
-// поле №10
-        Rectangle field10 = new Rectangle(tileSize * 97, tileSize * 73, tileSize * 1, tileSize * 1);
+        Rectangle field10 = new Rectangle(tileSize * 96, tileSize * 72, tileSize * 2, tileSize * 2);
         walkers.add(EntityFactory.createWheatWalker(
-                this,
-                tileSize * 97, tileSize * 73,
-                "/npc/farmer",
-                field10
+                this, tileSize * 96, tileSize * 72, "/npc/farmer", field10
         ));
 
 

@@ -54,7 +54,6 @@ public class Enemy extends Entity {
         loadImages();
         changeState(new IdleState());
     }
-
     //ресурс лоадер
     private void loadImages() {
         try {
@@ -125,7 +124,6 @@ public class Enemy extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
@@ -149,8 +147,6 @@ public class Enemy extends Entity {
             BufferedImage walkImg = frames[dir][spriteNum - 1];
             g2.drawImage(walkImg, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
-
-
         String hpText = String.valueOf(health);
         g2.setFont(new Font("Arial", Font.PLAIN, 14));   // можно подобрать свой шрифт/размер
         g2.setColor(Color.WHITE);
@@ -158,9 +154,8 @@ public class Enemy extends Entity {
         int textWidth  = fm.stringWidth(hpText);
         int textHeight = fm.getAscent();
         int textX = screenX + (gp.tileSize - textWidth) / 2;
-        int textY = screenY - 5; //пиксели над спрайтлм
+        int textY = screenY - 5;
         g2.drawString(hpText, textX, textY);
-
     }
     public boolean isPlayerInRange() {
         int dx = gp.player.worldX - worldX;
@@ -170,12 +165,9 @@ public class Enemy extends Entity {
     }
     @Override
     public Enemy clone() {
-
         return (Enemy) super.clone();
     }
-
     @Override
     public void defaultUpdate() {
-
     }
 }

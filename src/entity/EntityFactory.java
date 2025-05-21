@@ -2,7 +2,6 @@ package entity;
 
 import entity.Enemy;
 import main.GameplayScreen;
-
 import java.awt.*;
 
 public class EntityFactory {
@@ -15,7 +14,6 @@ public class EntityFactory {
             int startWorldX, int startWorldY,
             String spritePrefix,
             Rectangle fieldBounds) {
-
         return new WheatNPC(
                 gp,
                 startWorldX,

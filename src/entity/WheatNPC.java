@@ -8,10 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 
-/**
- * NPC, который блуждает внутри заданного прямоугольника и
- * анимированно ходит (5 кадров × 4 направления).
- */
+
 public class WheatNPC extends Entity {
     private static final int ANIM_FRAMES = 5;
     private static final int UP    = 0, DOWN  = 1, LEFT  = 2, RIGHT = 3;

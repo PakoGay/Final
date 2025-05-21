@@ -16,7 +16,6 @@ public class Player extends Entity{
     private Command moveLeftCommand;
     private Command moveRightCommand;
     private AttackStrategy attackStrategy = new MeleeAttackStrategy();
-
     public final int screenX;
     public final int screenY;
 
@@ -61,7 +60,6 @@ public class Player extends Entity{
         if (!collisionOn) worldY -= speed;
         animateWalk();
     }
-
     public void moveDown() {
         direction = "down";
         collisionOn = false;
@@ -69,7 +67,6 @@ public class Player extends Entity{
         if (!collisionOn) worldY += speed;
         animateWalk();
     }
-
     public void moveLeft() {
         direction = "left";
         collisionOn = false;
@@ -77,7 +74,6 @@ public class Player extends Entity{
         if (!collisionOn) worldX -= speed;
         animateWalk();
     }
-
     public void moveRight() {
         direction = "right";
         collisionOn = false;
@@ -85,7 +81,6 @@ public class Player extends Entity{
         if (!collisionOn) worldX += speed;
         animateWalk();
     }
-
     private void animateWalk() {
         spriteCounter++;
         if (spriteCounter > 10) {
@@ -99,7 +94,6 @@ public class Player extends Entity{
     public void addHealthObserver(HealthObserver observer) {
         healthObservers.add(observer);
     }
-
     public void removeHealthObserver(HealthObserver observer) {
         healthObservers.remove(observer);
     }
@@ -137,7 +131,6 @@ public class Player extends Entity{
     }
     public void update() {
         state.update(this);
-
         if (keyH.upPressed)    moveUpCommand.execute();
         if (keyH.downPressed)  moveDownCommand.execute();
         if (keyH.leftPressed)  moveLeftCommand.execute();
@@ -161,9 +154,7 @@ public class Player extends Entity{
         }
 
     }
-
     @Override
     public void defaultUpdate() {
-
     }
 }

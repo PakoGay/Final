@@ -169,8 +169,6 @@ public class GameplayScreen implements Screen {
         ui.draw(g);
         Font font = new Font("Arial", Font.BOLD, 26);  // имя шрифта, стиль, размер
         g.setFont(font);
-        g.setColor(Color.RED);
-        g.drawString("Health: " + player.health, screenWidth - 800, 25);
         if (dialogueActive && dialogueNpc != null) {
             String text = dialogueNpc.dialogues[dialogueIndex];
 

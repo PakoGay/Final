@@ -23,8 +23,6 @@ public class Enemy extends Entity {
 
     public int aiCounter = 0;
     public static final int anim_frames = 5;
-
-    /* 0-UP,1-DOWN,2-LEFT,3-RIGHT  ×  8 кадров */
     private final BufferedImage[][] frames = new BufferedImage[4][anim_frames];
     public static final int UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
 
@@ -54,7 +52,6 @@ public class Enemy extends Entity {
         loadImages();
         changeState(new IdleState());
     }
-    //ресурс лоадер
     private void loadImages() {
         try {
             for (int i = 0; i < anim_frames; i++) {

@@ -12,24 +12,14 @@ import java.util.Random;
 public class WheatNPC extends Entity {
     private static final int ANIM_FRAMES = 5;
     private static final int UP    = 0, DOWN  = 1, LEFT  = 2, RIGHT = 3;
-
-    // Тайловая скорость
     private static final int SPEED = 2;
-
-    // Спрайты ходьбы [direction][frame]
     private final BufferedImage[][] frames = new BufferedImage[4][ANIM_FRAMES];
-
-    // Счётчики анимации
     private int spriteCounter = 0;
     private int spriteNum     = 1;
     private final int animDelay = 10;
-
-    // Для рандомного блуждания
     private String direction = "down";
     private int    moveTicker, moveDuration;
     private final Random rnd = new Random();
-
-    // Зона, в пределах которой ходит NPC
     private final Rectangle bounds;
 
     public WheatNPC(GameplayScreen gp,
@@ -41,10 +31,8 @@ public class WheatNPC extends Entity {
         this.worldY = startY;
         this.bounds = fieldBounds;
 
-        // хитбокс под спрайт
         solidArea = new Rectangle(0, 0, gp.tileSize, gp.tileSize);
 
-        // Загрузка кадров анимации
         try {
             for (int i = 0; i < ANIM_FRAMES; i++) {
                 frames[UP]   [i] = ImageIO.read(getClass().getResource(
@@ -60,8 +48,6 @@ public class WheatNPC extends Entity {
             throw new RuntimeException("Failed to load wheat NPC frames", e);
         }
     }
-
-    /** Здесь вся старая AI-логика переезжает вместе с анимацией */
     @Override
     public void defaultUpdate() {
         // 1) Если пора менять направление — выбираем новое
@@ -75,7 +61,6 @@ public class WheatNPC extends Entity {
             moveDuration = 30 + rnd.nextInt(90);
             moveTicker   = moveDuration;
         }
-        // 2) Пробуем шагнуть
         int nx = worldX, ny = worldY;
         switch (direction) {
             case "up"    -> ny -= SPEED;
@@ -87,26 +72,21 @@ public class WheatNPC extends Entity {
             worldX = nx;
             worldY = ny;
         } else {
-            // упёрлись в границу — сразу сменим направление
             moveTicker = 0;
         }
         moveTicker--;
 
-        // 3) Анимация ходьбы
         spriteCounter++;
         if (spriteCounter > animDelay) {
-            spriteNum = spriteNum % ANIM_FRAMES + 1;  // 1..5 по кругу
+            spriteNum = spriteNum % ANIM_FRAMES + 1;
             spriteCounter = 0;
         }
     }
-
-    /** Неподвижный стейт — все в defaultUpdate */
     public void update() {
         defaultUpdate();
     }
 
     public void draw(Graphics2D g2) {
-        // 1) определяем, какой ряд кадров рисовать
         int dirIdx = switch (direction) {
             case "up"    -> UP;
             case "down"  -> DOWN;
@@ -114,11 +94,9 @@ public class WheatNPC extends Entity {
             default      -> RIGHT;
         };
 
-        // 2) вычисляем экранные координаты
         int sx = worldX - gp.player.worldX + gp.player.screenX;
         int sy = worldY - gp.player.worldY + gp.player.screenY;
 
-        // 3) рисуем текущий кадр анимации
         BufferedImage img = frames[dirIdx][spriteNum - 1];
         g2.drawImage(img, sx, sy, gp.tileSize, gp.tileSize, null);
     }

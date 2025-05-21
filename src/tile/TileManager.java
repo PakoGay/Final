@@ -146,7 +146,6 @@ public class TileManager {
                 true,//54
         };
 
-        // заполняем массив tile[]
         for (int i = 0; i < tex.length; i++) {
             tile[i] = new Tile();
             tile[i].image = Assets.get(tex[i]);

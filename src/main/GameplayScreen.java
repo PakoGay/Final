@@ -43,6 +43,7 @@ public class GameplayScreen implements Screen {
     private NPC     dialogueNpc;
     private int     dialogueIndex = 0;
     private boolean iConsumed      = false;
+    private boolean isGameOver = false;
 
     public GameplayScreen() {
         tileM    = new TileManager(this);
@@ -124,6 +125,7 @@ public class GameplayScreen implements Screen {
 
     @Override public void update(float dt) {
         player.update();
+
         if (keyH.iPressed) {
             if (!iConsumed) {
                 iConsumed = true; // блокируем до отпускания
@@ -148,11 +150,9 @@ public class GameplayScreen implements Screen {
                 }
             }
         } else {
-            // K отпущена — разблокируем
             iConsumed = false;
         }
 
-        // 3) если открыт диалог — мир заморожен
         if (dialogueActive) return;
         ui.update();
         for (Enemy e : enemies) e.update();
@@ -179,21 +179,17 @@ public class GameplayScreen implements Screen {
             int pad   = 20;
             int textW = screenWidth - pad * 2;
 
-            // фон
             g.setColor(new Color(0, 0, 0, 220));        // чуть более непрозрачный
             g.fillRect(0, boxY, screenWidth, boxH);
 
-            // рамка
             g.setColor(Color.WHITE);
             g.drawRect(0, boxY, screenWidth-1, boxH-1);
 
-            // текст
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.PLAIN, 20));
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                     RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            // разбиваем на строки
             FontMetrics fm = g.getFontMetrics();
             List<String> lines = new ArrayList<>();
             String[] words = text.split(" ");
@@ -209,7 +205,6 @@ public class GameplayScreen implements Screen {
             }
             if (line.length() > 0) lines.add(line.toString());
 
-            // рисуем строки
             int lineH = fm.getHeight();
             int startY = boxY + pad + fm.getAscent();
             for (int i = 0; i < lines.size(); i++) {

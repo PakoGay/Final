@@ -19,19 +19,15 @@ public final class SoundManager {
             }
         });
     }
-
     private static SoundManager instance;
     private final Map<String, Clip> cache = new HashMap<>();
-
     private SoundManager() {}
-
     public static SoundManager getInstance() {
         if (instance == null) {
             instance = new SoundManager();
         }
         return instance;
     }
-
     public void play(String name) {
         Clip clip = cache.computeIfAbsent(name, n -> {
             try {
